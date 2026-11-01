@@ -35,55 +35,76 @@ def serve_dashboard():
         <title>ZonelessAI Engine</title>
         <link rel="manifest" href="/manifest.json">
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <script src="https://jsdelivr.net"></script>
+        <style>
+            body { background-color: #000000; color: #e5e5e5; font-family: monospace; margin: 0; padding: 0; }
+            .main-container { max-width: 440px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; padding: 20px; background-color: #0a0a0a; border-left: 1px solid #1a1a1a; border-right: 1px solid #1a1a1a; box-sizing: border-box; }
+            header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1px solid #1a1a1a; }
+            .header-title { color: #ffffff; font-weight: bold; text-transform: uppercase; font-size: 15px; letter-spacing: 2px; margin: 0; }
+            .badge { background-color: #064e3b; color: #34d399; border: 1px solid #047857; padding: 4px 10px; font-size: 11px; border-radius: 4px; font-weight: bold; }
+            .stream-area { flex-grow: 1; margin: 20px 0; overflow-y: auto; }
+            .node-box { border: 1px solid #1a1a1a; background-color: #121212; padding: 14px; border-radius: 6px; margin-bottom: 20px; }
+            .node-label { font-size: 10px; color: #737373; text-transform: uppercase; display: block; margin-bottom: 6px; font-weight: bold; }
+            .node-text { font-size: 14px; color: #d4d4d4; }
+            .node-highlight { color: #10b981; font-weight: bold; }
+            .section-title { font-size: 13px; color: #10b981; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; display: block; margin-bottom: 16px; }
+            .merchant-card { border: 1px solid #1a1a1a; background-color: #121212; padding: 16px; border-radius: 6px; margin-bottom: 16px; }
+            .card-header { display: flex; justify-content: space-between; align-items: center; }
+            .merchant-name { font-size: 15px; font-weight: bold; color: #ffffff; }
+            .match-badge { font-size: 11px; background-color: #064e3b; color: #34d399; border: 1px solid #047857; padding: 3px 8px; border-radius: 4px; font-weight: bold; }
+            .merchant-perk { font-size: 13px; color: #cbd5e1; margin: 12px 0 8px 0; line-height: 1.5; }
+            .merchant-module { font-size: 10px; color: #737373; font-weight: bold; text-transform: uppercase; }
+            footer { padding-top: 16px; border-top: 1px solid #1a1a1a; background-color: #0a0a0a; }
+            .scan-btn { width: 100%; shortcut: 100%; background-color: #10b981; border: none; color: #000000; font-weight: bold; padding: 14px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; border-radius: 4px; cursor: pointer; font-family: monospace; transition: all 0.2s; }
+            .scan-btn:active { transform: scale(0.99); opacity: 0.9; }
+            .nav-grid { display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; font-size: 12px; color: #737373; padding-top: 16px; font-weight: bold; }
+            .nav-active { color: #10b981; }
+            .placeholder-text { font-size: 13px; color: #737373; font-style: italic; }
+            .pulse-text { font-size: 13px; color: #10b981; font-weight: bold; }
+        </style>
     </head>
-    <body class="bg-black text-neutral-200 font-mono antialiased">
-        <main class="max-w-md mx-auto min-h-screen flex flex-col justify-between p-4 bg-neutral-950 border-x border-neutral-900 shadow-2xl">
+    <body>
+        <div class="main-container">
             
             <!-- App Header -->
-            <header class="flex justify-between items-center py-3 border-b border-neutral-900">
-                <div class="flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <h1 class="text-white font-bold tracking-widest text-xs uppercase">ZonelessAI Console</h1>
-                </div>
-                <span class="text-[9px] bg-emerald-950 text-emerald-400 border border-emerald-900 px-2 py-0.5 rounded font-sans">AGENT_ACTIVE</span>
+            <header>
+                <h1 class="header-title">ZonelessAI Console</h1>
+                <span class="badge">AGENT_ACTIVE</span>
             </header>
 
             <!-- Main Live Stream Node Area -->
-            <section class="flex-grow my-4 space-y-4 overflow-y-auto max-h-[70vh]">
-                <div class="border border-neutral-900 bg-black/40 p-4 rounded-lg space-y-1">
-                    <span class="text-[9px] text-neutral-500">SYSTEM COUPLING</span>
-                    <div class="text-xs text-neutral-300">Connected to Node: <span class="text-emerald-400">ordsoel88</span></div>
+            <div class="stream-area">
+                <div class="node-box">
+                    <span class="node-label">SYSTEM COUPLING</span>
+                    <div class="node-text">Connected to Node: <span class="node-highlight">ordsoel88</span></div>
                 </div>
 
-                <div class="space-y-2">
-                    <span class="text-[10px] text-emerald-500 uppercase tracking-wider font-bold">🎯 Native Proactive Matches</span>
-                    <div id="results-box" class="space-y-2">
-                        <p class="text-[11px] text-neutral-600 italic">Initialize location scanning to engage vector space metrics...</p>
+                <div>
+                    <span class="section-title">🎯 Native Proactive Matches</span>
+                    <div id="results-box">
+                        <p class="placeholder-text">Initialize location scanning to engage vector space metrics...</p>
                     </div>
                 </div>
-            </section>
+            </div>
 
             <!-- Navigation Controls -->
-            <footer class="space-y-2 pt-2 border-t border-neutral-900">
-                <button onclick="triggerLocationScan()" class="w-full bg-emerald-500 hover:bg-emerald-400 active:scale-[0.99] text-black font-bold py-3 text-xs tracking-wider uppercase rounded transition-all cursor-pointer">
+            <footer>
+                <button onclick="triggerLocationScan()" class="scan-btn">
                     Scan Local Environment
                 </button>
-                <div class="grid grid-cols-3 text-center text-[10px] text-neutral-500 pt-2 font-sans font-medium">
-                    <div class="text-emerald-400 font-mono font-bold">Scout</div>
+                <div class="nav-grid">
+                    <div class="nav-active">Scout</div>
                     <div>Luggage</div>
                     <div>Rentals</div>
                 </div>
             </footer>
 
-        </main>
+        </div>
 
         <script>
         function triggerLocationScan() {
             const resultsBox = document.getElementById('results-box');
-            resultsBox.innerHTML = '<p class="text-[11px] text-emerald-400 animate-pulse">Querying Oracle 26ai vector space maps...</p>';
+            resultsBox.innerHTML = '<p class="pulse-text">Querying Oracle 26ai vector space maps...</p>';
             
-            // Simulating a mobile GPS hardware polling interaction coordinate drop
             fetch('/api/scout/location', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -98,19 +119,19 @@ def serve_dashboard():
                 resultsBox.innerHTML = '';
                 data.scout_results.forEach(item => {
                     resultsBox.innerHTML += `
-                        <div class="border border-neutral-900 bg-neutral-900/30 p-3 rounded space-y-2">
-                            <div class="flex justify-between items-start">
-                                <div class="text-xs font-bold text-white">${item.name}</div>
-                                <span class="text-[8px] bg-emerald-950 text-emerald-400 border border-emerald-900/50 px-1.5 py-0.5 rounded font-sans font-bold">MATCH: ${Math.round((1 - item.match_distance_score) * 100)}%</span>
+                        <div class="merchant-card">
+                            <div class="card-header">
+                                <div class="merchant-name">${item.name}</div>
+                                <span class="match-badge">MATCH: ${Math.round((1 - item.match_distance_score) * 100)}%</span>
                             </div>
-                            <p class="text-[10px] text-neutral-400 leading-normal">${item.perk}</p>
-                            <div class="text-[9px] text-neutral-600 font-sans font-semibold">${item.category} Module</div>
+                            <p class="merchant-perk">${item.perk}</p>
+                            <div class="merchant-module">${item.category} Module</div>
                         </div>
                     `;
                 });
             })
             .catch(err => {
-                resultsBox.innerHTML = `<p class="text-xs text-red-500">Pipeline error: ${err}</p>`;
+                resultsBox.innerHTML = `<p style="color: #ef4444; font-size: 13px;">Pipeline error: ${err}</p>`;
             });
         }
         </script>
@@ -128,7 +149,7 @@ def agent_status():
         db_version = cursor.fetchone()
         cursor.close()
         conn.close()
-        return jsonify({"status": "online", "database_version": db_version[0] if db_version else "Unknown"}), 200
+        return jsonify({"status": "online", "database_version": db_version if db_version else "Unknown"}), 200
     except Exception as e:
         return jsonify({"status": "offline", "details": str(e)}), 500
 
@@ -158,8 +179,8 @@ def scout_location():
         scout_results = []
         for row in rows:
             scout_results.append({
-                "name": row[0], "category": row[1], "perk": row[2],
-                "is_partner": bool(row[3]), "match_distance_score": round(float(row[4]), 4)
+                "name": row, "category": row, "perk": row,
+                "is_partner": bool(row), "match_distance_score": round(float(row), 4)
             })
         cursor.close()
         conn.close()
